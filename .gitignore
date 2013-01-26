@@ -1,0 +1,5 @@
+daytime
+*.pro
+*.pro.user
+*.o
+Makefile
