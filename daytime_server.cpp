@@ -1,4 +1,5 @@
 #include "daytime_server.h"
+#include <iostream>
 
 DaytimeServer::DaytimeServer(){
     this->port = 0;
@@ -8,11 +9,10 @@ DaytimeServer::DaytimeServer(){
 char* DaytimeServer::getTimeInString(){
     time(&seconds);
     timeinfo = localtime(&seconds);
-    char daytime[42];
 
-    strftime(daytime, 42, "%A, %B %d, %Y %H:%M:%S-%Z", timeinfo);
+    strftime(last_daytime, 50, "%A, %B %d, %Y %H:%M:%S-%Z", timeinfo);
     //9, 9 2, 4 2:2:2-3 = 42znaki
-    return daytime;
+    return last_daytime;
 }
 
 bool DaytimeServer::start(char * port){
@@ -54,7 +54,7 @@ void DaytimeServer::listen(){
 
     char endline[3] = {13, 10, 0};
     struct sockaddr client_addr;
-    socklen_t client_addr_len = sizeof(client_addr);
+    socklen_t client_addr_len;
     timeval t = {0, 100};
     fd_set read;
 
@@ -64,7 +64,7 @@ void DaytimeServer::listen(){
         FD_SET(sock, &read);
 
         if(select(sock+1, &read, NULL, NULL, &t)){
-                client_addr_len = sizeof(client_addr);
+                client_addr_len = sizeof(sockaddr_in);
                 recvfrom(sock, NULL, 0, 0, &client_addr, &client_addr_len);
 
                 sprintf(buff, "%s%s", getTimeInString(), endline);

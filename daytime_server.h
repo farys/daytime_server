@@ -12,7 +12,7 @@
 typedef int socklen_t;
 #endif
 
-#ifdef _unix
+#ifdef __linux
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -32,6 +32,7 @@ private:
     int sock;
     bool go_offline;
     time_t seconds;
+    char last_daytime[50];
     struct tm *timeinfo;
     int port;
     unsigned int request;
