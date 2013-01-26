@@ -16,7 +16,14 @@ char* DaytimeServer::getTimeInString(){
 }
 
 bool DaytimeServer::start(char * port){
-
+    #ifdef WIN32
+      WORD wVersionRequested;
+      WSADATA wsaData;
+      wVersionRequested = MAKEWORD(1,1);
+      int ver = WSAStartup(wVersionRequested, &wsaData);
+      int hib = HIBYTE(wsaData.wHighVersion);
+      int lob = LOBYTE(wsaData.wHighVersion);
+    #endif
 
     struct sockaddr_in sin;
     struct servent *pse;
@@ -47,7 +54,7 @@ void DaytimeServer::listen(){
 
     char endline[3] = {13, 10, 0};
     struct sockaddr client_addr;
-    socklen_t client_addr_len;
+    socklen_t client_addr_len = sizeof(client_addr);
     timeval t = {0, 100};
     fd_set read;
 
@@ -73,6 +80,9 @@ void DaytimeServer::stopListen(){
 }
 
 bool DaytimeServer::stop(){
+    #ifdef WIN32
+       WSACleanup();
+    #endif
     close(this->sock);
     this->port = 0;
     return true;

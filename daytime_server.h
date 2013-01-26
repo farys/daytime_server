@@ -1,16 +1,24 @@
 #ifndef DAYTIME_SERVER_H
 #define DAYTIME_SERVER_H
 #include <time.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <stdlib.h>
-#include <arpa/inet.h>
 #include <memory.h>
 #include <signal.h>
 #include <cstdio>
 #include <unistd.h>
+
+#ifdef WIN32
+#include <winsock2.h>
+typedef int socklen_t;
+#endif
+
+#ifdef _unix
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#endif
 
 class DaytimeServer{
 public:
