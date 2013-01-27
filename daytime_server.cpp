@@ -10,7 +10,12 @@ char* DaytimeServer::getTimeInString(){
     time(&seconds);
     timeinfo = localtime(&seconds);
 
+#ifdef WIN32
+    strftime(last_daytime, 50, "%A, %B %d, %Y %H:%M:%S", timeinfo);
+#elif __linux
     strftime(last_daytime, 50, "%A, %B %d, %Y %H:%M:%S-%Z", timeinfo);
+#endif
+
     //9, 9 2, 4 2:2:2-3 = 42znaki
     return last_daytime;
 }
