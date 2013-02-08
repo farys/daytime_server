@@ -1,6 +1,5 @@
 #include "daytime_server.h"
 #include <iostream>
-#include <exception>
 
 DaytimeServer::DaytimeServer(){
     //ilosc zadan ustawiamy na 0
@@ -116,10 +115,14 @@ void DaytimeServer::answerToClient(){
 }
 
 void DaytimeServer::stop(){
-    //jesli plik binarny jest dla systemu Windows to odlaczamy biblioteke Winsock
+    // w przypadku gdy kompilujemy plik binarny dla systemu Windows
     #ifdef WIN32
-       WSACleanup();
+        //zamykamy gniazdo sieciowe
+        closesocket(sock);
+        //funkcja odlacza biblioteke Winsock od procesu
+        WSACleanup();
+    #elif __linux
+        //zamykamy gniazdo sieciowe
+        close(sock);
     #endif
-    //zamykamy gniazdo sieciowe
-    close(this->sock);
 }

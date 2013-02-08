@@ -1,6 +1,12 @@
 #include <iostream>
 #include "daytime_server.h"
 
+#ifdef WIN32
+//ta definicja normalnie jest zadeklarowana w standardzie POSIX
+//w przypadku windowsa musimy zadeklarowac recznie jej wartosc na 0
+#define STDIN_FILENO 0
+#endif
+
 /** Funkcja sluzy do sprawdzania czy klawisz zostal wcisniety
  *  zrodlo: http://cboard.cprogramming.com/
  */
@@ -18,7 +24,7 @@ bool typed_exit (void)
   //wyzerowanie tablicy
   FD_ZERO(&rdfs);
   //wrzucenie deskryptora strumienia wejscia do zbioru rdfs
-  FD_SET (STDIN_FILENO, &rdfs);
+  FD_SET(STDIN_FILENO, &rdfs);
 
   //sprawdzanie czy nie wcisnieto klawisza
   select(STDIN_FILENO+1, &rdfs, NULL, NULL, &tv);

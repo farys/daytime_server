@@ -5,7 +5,6 @@
 #include <memory.h>
 #include <signal.h>
 #include <cstdio>
-#include <unistd.h>
 
 //biblioteki dla systemu Windows
 #ifdef WIN32
@@ -19,6 +18,7 @@ typedef int socklen_t;
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #endif
 /**
  * Głowna klasa serwera
