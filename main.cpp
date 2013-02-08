@@ -27,9 +27,12 @@ bool typed_exit (void)
   if(!FD_ISSET(STDIN_FILENO, &rdfs)) return false;
 
   char word[256];
+  //pobranie zawartosci oczekujacej na strumieniu wejsciowym
   std::cin.get(word, 256);
+  //wyczeszczenie buforu
   std::cin.ignore();
   //std::cout << "DEBUG >> " << word << std::endl;
+  //czy w buforze lancuch znakow zawieralo sie slowo "exit"
   if(word[0]=='e' && word[1]=='x' && word[2]=='i' && word[3]=='t') return true;
 
   return false;
@@ -37,6 +40,7 @@ bool typed_exit (void)
 
 using namespace std;
 
+//obiekt serwera
 DaytimeServer server;
 
 int main(){
@@ -56,6 +60,7 @@ int main(){
     }
 
     cout << "Zakonczono nasluchiwanie, trwa wylaczanie serwera..." << endl;
+    //zamykanie socketu oraz oddelegowanie biblioteki winsock w przypadku windows
     server.stop();
 
     return EXIT_SUCCESS;
